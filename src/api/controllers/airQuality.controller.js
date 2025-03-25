@@ -9,7 +9,7 @@ exports.getAllAirQualityData = async (req, res, next) => {
     const data = await airQualityService.getAllAirQualityData(limit, offset);
     res.json({
       count: data.length,
-      data
+      data,
     });
   } catch (error) {
     logger.error('Error getting all air quality data:', error);
@@ -29,7 +29,7 @@ exports.getAirQualityByCity = async (req, res, next) => {
     res.json({
       count: data.length,
       city,
-      data
+      data,
     });
   } catch (error) {
     logger.error(`Error getting air quality data for city ${req.params.city}:`, error);
@@ -45,7 +45,7 @@ exports.getAirQualityByDate = async (req, res, next) => {
     res.json({
       count: data.length,
       date,
-      data
+      data,
     });
   } catch (error) {
     logger.error(`Error getting air quality data for date ${req.params.date}:`, error);
@@ -62,7 +62,7 @@ exports.getAirQualityByDateRange = async (req, res, next) => {
       count: data.length,
       startDate,
       endDate,
-      data
+      data,
     });
   } catch (error) {
     logger.error('Error getting air quality data by date range:', error);
@@ -78,14 +78,14 @@ exports.getAirQualityByPM25Range = async (req, res, next) => {
     const data = await airQualityService.getAirQualityByPM25Range(
       parseFloat(minPm25),
       parseFloat(maxPm25),
-      limit
+      limit,
     );
 
     res.json({
       count: data.length,
       minPm25: parseFloat(minPm25),
       maxPm25: parseFloat(maxPm25),
-      data
+      data,
     });
   } catch (error) {
     logger.error('Error getting air quality data by PM2.5 range:', error);
@@ -101,14 +101,14 @@ exports.getAirQualityByPopulationDensity = async (req, res, next) => {
     const data = await airQualityService.getAirQualityByPopulationDensity(
       parseFloat(minDensity),
       parseFloat(maxDensity),
-      limit
+      limit,
     );
 
     res.json({
       count: data.length,
       minDensity: parseFloat(minDensity),
       maxDensity: parseFloat(maxDensity),
-      data
+      data,
     });
   } catch (error) {
     logger.error('Error getting air quality data by population density:', error);
@@ -125,7 +125,7 @@ exports.getNearbyAirQuality = async (req, res, next) => {
       parseFloat(lat),
       parseFloat(lng),
       parseFloat(distance),
-      date
+      date,
     );
 
     res.json({
@@ -133,7 +133,7 @@ exports.getNearbyAirQuality = async (req, res, next) => {
       location: { lat: parseFloat(lat), lng: parseFloat(lng) },
       distance: parseFloat(distance),
       date,
-      data
+      data,
     });
   } catch (error) {
     logger.error('Error getting nearby air quality data:', error);
@@ -147,7 +147,7 @@ exports.getAirQualityStatsByCity = async (req, res, next) => {
 
     res.json({
       count: stats.length,
-      data: stats
+      data: stats,
     });
   } catch (error) {
     logger.error('Error getting air quality stats by city:', error);
@@ -164,7 +164,7 @@ exports.getAirQualityTimeSeries = async (req, res, next) => {
 
     if (data.length === 0) {
       return res.status(404).json({
-        message: `No air quality time series data found for city: ${city} between ${startDate} and ${endDate}`
+        message: `No air quality time series data found for city: ${city} between ${startDate} and ${endDate}`,
       });
     }
 
@@ -173,7 +173,7 @@ exports.getAirQualityTimeSeries = async (req, res, next) => {
       city,
       startDate,
       endDate,
-      data
+      data,
     });
   } catch (error) {
     logger.error(`Error getting air quality time series for city ${req.params.city}:`, error);
@@ -194,7 +194,7 @@ exports.getAirQualityClusters = async (req, res, next) => {
       zoom,
       bounds,
       date,
-      data
+      data,
     });
   } catch (error) {
     logger.error('Error getting air quality clusters:', error);
@@ -215,7 +215,7 @@ exports.getClustersByDate = async (req, res, next) => {
       date,
       zoom,
       bounds,
-      data
+      data,
     });
   } catch (error) {
     logger.error(`Error getting clusters for date ${req.params.date}:`, error);
@@ -236,7 +236,7 @@ exports.getSimplifiedByViewport = async (req, res, next) => {
       zoom,
       bounds,
       date,
-      data
+      data,
     });
   } catch (error) {
     logger.error('Error getting simplified data by viewport:', error);
@@ -256,7 +256,7 @@ exports.getByViewport = async (req, res, next) => {
       count: data.length,
       bounds,
       date,
-      data
+      data,
     });
   } catch (error) {
     logger.error('Error getting data by viewport:', error);
@@ -277,7 +277,7 @@ exports.getDataByDateAndViewport = async (req, res, next) => {
       count: data.length,
       date,
       bounds,
-      data
+      data,
     });
   } catch (error) {
     logger.error(`Error getting data for date ${req.params.date} by viewport:`, error);
@@ -290,12 +290,7 @@ exports.getVectorTile = async (req, res, next) => {
     const { z, x, y } = req.params;
     const { date } = req.query;
 
-    const tile = await airQualityService.getVectorTile(
-      parseInt(z),
-      parseInt(x),
-      parseInt(y),
-      date
-    );
+    const tile = await airQualityService.getVectorTile(parseInt(z), parseInt(x), parseInt(y), date);
 
     if (tile) {
       res.setHeader('Content-Type', 'application/x-protobuf');
@@ -304,7 +299,10 @@ exports.getVectorTile = async (req, res, next) => {
       res.status(204).end();
     }
   } catch (error) {
-    logger.error(`Error getting vector tile z:${req.params.z}, x:${req.params.x}, y:${req.params.y}:`, error);
+    logger.error(
+      `Error getting vector tile z:${req.params.z}, x:${req.params.x}, y:${req.params.y}:`,
+      error,
+    );
     next(error);
   }
 };
@@ -315,7 +313,7 @@ exports.getAllCities = async (req, res, next) => {
 
     res.json({
       count: cities.length,
-      cities
+      cities,
     });
   } catch (error) {
     logger.error('Error getting all cities:', error);
@@ -329,7 +327,7 @@ exports.getAllDates = async (req, res, next) => {
 
     res.json({
       count: dates.length,
-      dates
+      dates,
     });
   } catch (error) {
     logger.error('Error getting all dates:', error);

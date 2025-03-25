@@ -7,12 +7,9 @@ exports.validateGetAll = [
     .isInt({ min: 1, max: 1000 })
     .withMessage('Limit must be a number between 1 and 1000'),
 
-  query('offset')
-    .optional()
-    .isInt({ min: 0 })
-    .withMessage('Offset must be a non-negative number'),
+  query('offset').optional().isInt({ min: 0 }).withMessage('Offset must be a non-negative number'),
 
-  validationMiddleware
+  validationMiddleware,
 ];
 
 exports.validateGetByCity = [
@@ -22,7 +19,7 @@ exports.validateGetByCity = [
     .isString()
     .withMessage('City must be a string'),
 
-  validationMiddleware
+  validationMiddleware,
 ];
 
 exports.validateGetByDate = [
@@ -32,7 +29,7 @@ exports.validateGetByDate = [
     .isISO8601()
     .withMessage('Date must be a valid date in ISO 8601 format (YYYY-MM-DD)'),
 
-  validationMiddleware
+  validationMiddleware,
 ];
 
 exports.validateGetByDateRange = [
@@ -54,7 +51,7 @@ exports.validateGetByDateRange = [
       return true;
     }),
 
-  validationMiddleware
+  validationMiddleware,
 ];
 
 exports.validateGetByPM25Range = [
@@ -81,7 +78,7 @@ exports.validateGetByPM25Range = [
     .isInt({ min: 1, max: 5000 })
     .withMessage('Limit must be a number between 1 and 5000'),
 
-  validationMiddleware
+  validationMiddleware,
 ];
 
 exports.validateGetByPopulationDensity = [
@@ -108,7 +105,7 @@ exports.validateGetByPopulationDensity = [
     .isInt({ min: 1, max: 5000 })
     .withMessage('Limit must be a number between 1 and 5000'),
 
-  validationMiddleware
+  validationMiddleware,
 ];
 
 exports.validateGetNearby = [
@@ -135,7 +132,7 @@ exports.validateGetNearby = [
     .isISO8601()
     .withMessage('Date must be a valid date in ISO 8601 format (YYYY-MM-DD)'),
 
-  validationMiddleware
+  validationMiddleware,
 ];
 
 exports.validateGetTimeSeries = [
@@ -163,7 +160,7 @@ exports.validateGetTimeSeries = [
       return true;
     }),
 
-  validationMiddleware
+  validationMiddleware,
 ];
 
 exports.validateViewportParams = [
@@ -202,7 +199,7 @@ exports.validateViewportParams = [
     .isISO8601()
     .withMessage('Date must be a valid date in ISO 8601 format (YYYY-MM-DD)'),
 
-  validationMiddleware
+  validationMiddleware,
 ];
 
 exports.validateClusterParams = [
@@ -252,7 +249,7 @@ exports.validateClustersByDate = [
     .isFloat({ min: -180, max: 180 })
     .withMessage('West boundary must be a longitude between -180 and 180'),
 
-  validationMiddleware
+  validationMiddleware,
 ];
 
 exports.validateTileParams = [
@@ -279,7 +276,7 @@ exports.validateTileParams = [
     .isISO8601()
     .withMessage('Date must be a valid date in ISO 8601 format (YYYY-MM-DD)'),
 
-  validationMiddleware
+  validationMiddleware,
 ];
 
 exports.validateDataByDateAndViewport = [
@@ -289,12 +286,12 @@ exports.validateDataByDateAndViewport = [
     .isISO8601()
     .withMessage('Date must be a valid date in ISO 8601 format (YYYY-MM-DD)'),
 
-  ...this.validateViewportParams.slice(0, -1), // Remove the validation middleware
+  ...this.validateViewportParams.slice(0, -1),
 
   query('limit')
     .optional()
     .isInt({ min: 1, max: 5000 })
     .withMessage('Limit must be a number between 1 and 5000'),
 
-  validationMiddleware
+  validationMiddleware,
 ];

@@ -5,123 +5,101 @@ const airQualityValidator = require('../validators/airQuality.validator');
 const router = express.Router();
 
 // Basic data endpoints
-router.get(
-  '/',
-  airQualityValidator.validateGetAll,
-  airQualityController.getAllAirQualityData
-);
+router.get('/', airQualityValidator.validateGetAll, airQualityController.getAllAirQualityData);
 
 // City-based endpoints
-router.get(
-  '/cities',
-  airQualityController.getAllCities
-);
+router.get('/cities', airQualityController.getAllCities);
 
 router.get(
   '/city/:city',
   airQualityValidator.validateGetByCity,
-  airQualityController.getAirQualityByCity
+  airQualityController.getAirQualityByCity,
 );
 
-router.get(
-  '/stats/city',
-  airQualityController.getAirQualityStatsByCity
-);
+router.get('/stats/city', airQualityController.getAirQualityStatsByCity);
 
-router.get(
-  '/dates',
-  airQualityController.getAllDates
-);
+router.get('/dates', airQualityController.getAllDates);
 
-router.get(
-  '/date-range',
-  airQualityController.getDateRange
-);
+router.get('/date-range', airQualityController.getDateRange);
 
 router.get(
   '/date/:date',
   airQualityValidator.validateGetByDate,
-  airQualityController.getAirQualityByDate
+  airQualityController.getAirQualityByDate,
 );
 
 router.get(
   '/date-range-query',
   airQualityValidator.validateGetByDateRange,
-  airQualityController.getAirQualityByDateRange
+  airQualityController.getAirQualityByDateRange,
 );
 
 // PM2.5 and population density filtering
 router.get(
   '/pm25-range',
   airQualityValidator.validateGetByPM25Range,
-  airQualityController.getAirQualityByPM25Range
+  airQualityController.getAirQualityByPM25Range,
 );
 
-router.get(
-  '/stats/pm25',
-  airQualityController.getPM25Stats
-);
+router.get('/stats/pm25', airQualityController.getPM25Stats);
 
 router.get(
   '/population-density',
   airQualityValidator.validateGetByPopulationDensity,
-  airQualityController.getAirQualityByPopulationDensity
+  airQualityController.getAirQualityByPopulationDensity,
 );
 
-router.get(
-  '/stats/population-density',
-  airQualityController.getPopulationDensityStats
-);
+router.get('/stats/population-density', airQualityController.getPopulationDensityStats);
 
 // Spatial queries
 router.get(
   '/nearby/:lat/:lng/:distance',
   airQualityValidator.validateGetNearby,
-  airQualityController.getNearbyAirQuality
+  airQualityController.getNearbyAirQuality,
 );
 
 router.get(
   '/viewport',
   airQualityValidator.validateViewportParams,
-  airQualityController.getByViewport
+  airQualityController.getByViewport,
 );
 
 // Time series
 router.get(
   '/time-series/:city',
   airQualityValidator.validateGetTimeSeries,
-  airQualityController.getAirQualityTimeSeries
+  airQualityController.getAirQualityTimeSeries,
 );
 
 // Map optimization endpoints
 router.get(
   '/clusters/:zoom',
   airQualityValidator.validateClusterParams,
-  airQualityController.getAirQualityClusters
+  airQualityController.getAirQualityClusters,
 );
 
 router.get(
   '/clusters/date/:date/:zoom',
   airQualityValidator.validateClustersByDate,
-  airQualityController.getClustersByDate
+  airQualityController.getClustersByDate,
 );
 
 router.get(
   '/simplified/:zoom',
   airQualityValidator.validateClusterParams,
-  airQualityController.getSimplifiedByViewport
+  airQualityController.getSimplifiedByViewport,
 );
 
 router.get(
   '/date-viewport/:date',
   airQualityValidator.validateDataByDateAndViewport,
-  airQualityController.getDataByDateAndViewport
+  airQualityController.getDataByDateAndViewport,
 );
 
 router.get(
   '/tiles/:z/:x/:y',
   airQualityValidator.validateTileParams,
-  airQualityController.getVectorTile
+  airQualityController.getVectorTile,
 );
 
 module.exports = router;

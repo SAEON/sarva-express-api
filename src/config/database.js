@@ -12,9 +12,7 @@ const pool = new Pool({
 // Add PostGIS types for proper handling of geometry data
 const types = require('pg').types;
 
-types.setTypeParser(1700, function(val) {
-  return parseFloat(val);
-});
+types.setTypeParser(1700, (val) => parseFloat(val));
 
 pool.on('error', (err) => {
   logger.error('Unexpected error on idle client', err);

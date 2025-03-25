@@ -1,6 +1,6 @@
 const logger = require('../../config/logger');
 
-exports.errorHandler = (err, req, res, next) => {
+exports.errorHandler = (err, req, res, _next) => {
   logger.error(err.stack);
 
   const statusCode = err.statusCode || 500;

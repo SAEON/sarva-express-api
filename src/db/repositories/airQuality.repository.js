@@ -80,7 +80,7 @@ exports.findByDateRange = async (startDate, endDate) => {
     const result = await db.query(query, [startDate, endDate]);
     return result.rows;
   } catch (error) {
-    logger.error(`Database error in airQuality.repository.findByDateRange:`, error);
+    logger.error('Database error in airQuality.repository.findByDateRange:', error);
     throw error;
   }
 };
@@ -102,7 +102,7 @@ exports.findByPM25Range = async (minPm25, maxPm25, limit = 1000) => {
     const result = await db.query(query, [minPm25, maxPm25, limit]);
     return result.rows;
   } catch (error) {
-    logger.error(`Database error in airQuality.repository.findByPM25Range:`, error);
+    logger.error('Database error in airQuality.repository.findByPM25Range:', error);
     throw error;
   }
 };
@@ -124,7 +124,7 @@ exports.findByPopulationDensity = async (minDensity, maxDensity, limit = 1000) =
     const result = await db.query(query, [minDensity, maxDensity, limit]);
     return result.rows;
   } catch (error) {
-    logger.error(`Database error in airQuality.repository.findByPopulationDensity:`, error);
+    logger.error('Database error in airQuality.repository.findByPopulationDensity:', error);
     throw error;
   }
 };
@@ -149,20 +149,20 @@ exports.findNearby = async (lat, lng, distance, date = null) => {
         $3
       )
     `;
-    
+
     const params = [lng, lat, distance];
-    
+
     if (date) {
-      query += ` AND observation_date = $4`;
+      query += ' AND observation_date = $4';
       params.push(date);
     }
-    
-    query += ` ORDER BY distance, observation_date DESC`;
-    
+
+    query += ' ORDER BY distance, observation_date DESC';
+
     const result = await db.query(query, params);
     return result.rows;
   } catch (error) {
-    logger.error(`Database error in airQuality.repository.findNearby:`, error);
+    logger.error('Database error in airQuality.repository.findNearby:', error);
     throw error;
   }
 };
@@ -183,7 +183,7 @@ exports.getAvgPM25ByCity = async () => {
     const result = await db.query(query);
     return result.rows;
   } catch (error) {
-    logger.error(`Database error in airQuality.repository.getAvgPM25ByCity:`, error);
+    logger.error('Database error in airQuality.repository.getAvgPM25ByCity:', error);
     throw error;
   }
 };
@@ -206,7 +206,7 @@ exports.getTimeSeries = async (city, startDate, endDate) => {
     const result = await db.query(query, [city, startDate, endDate]);
     return result.rows;
   } catch (error) {
-    logger.error(`Database error in airQuality.repository.getTimeSeries:`, error);
+    logger.error('Database error in airQuality.repository.getTimeSeries:', error);
     throw error;
   }
 };
@@ -214,9 +214,9 @@ exports.getTimeSeries = async (city, startDate, endDate) => {
 exports.getClusters = async (zoom, bounds, date = null) => {
   try {
     const { north, south, east, west } = bounds;
-    
+
     const gridSize = 20 - parseInt(zoom);
-    
+
     let query = `
       SELECT 
         ST_AsGeoJSON(ST_Centroid(cluster_geom))::json as centroid,
@@ -232,24 +232,24 @@ exports.getClusters = async (zoom, bounds, date = null) => {
         FROM environmental.air_quality
         WHERE ST_MakeEnvelope($2, $3, $4, $5, 4326) && geom
     `;
-    
+
     const params = [gridSize * 0.01, west, south, east, north];
-    
+
     if (date) {
-      query += ` AND observation_date = $6`;
+      query += ' AND observation_date = $6';
       params.push(date);
     }
-    
+
     query += `
       ) clusters
       WHERE cid IS NOT NULL
       GROUP BY cid, cluster_geom
     `;
-    
+
     const result = await db.query(query, params);
     return result.rows;
   } catch (error) {
-    logger.error(`Database error in airQuality.repository.getClusters:`, error);
+    logger.error('Database error in airQuality.repository.getClusters:', error);
     throw error;
   }
 };
@@ -257,9 +257,9 @@ exports.getClusters = async (zoom, bounds, date = null) => {
 exports.getSimplifiedByViewport = async (zoom, bounds, date = null) => {
   try {
     const { north, south, east, west } = bounds;
-    
+
     const tolerance = Math.pow(2, 20 - parseInt(zoom)) / 1000;
-    
+
     let query = `
       SELECT 
         city,
@@ -271,23 +271,23 @@ exports.getSimplifiedByViewport = async (zoom, bounds, date = null) => {
       FROM environmental.air_quality
       WHERE ST_MakeEnvelope($2, $3, $4, $5, 4326) && geom
     `;
-    
+
     const params = [tolerance, west, south, east, north];
-    
+
     if (date) {
-      query += ` AND observation_date = $6`;
+      query += ' AND observation_date = $6';
       params.push(date);
     }
-    
+
     query += `
       GROUP BY city, observation_date
       ORDER BY avg_pm25 DESC
     `;
-    
+
     const result = await db.query(query, params);
     return result.rows;
   } catch (error) {
-    logger.error(`Database error in airQuality.repository.getSimplifiedByViewport:`, error);
+    logger.error('Database error in airQuality.repository.getSimplifiedByViewport:', error);
     throw error;
   }
 };
@@ -295,7 +295,7 @@ exports.getSimplifiedByViewport = async (zoom, bounds, date = null) => {
 exports.getByViewport = async (bounds, date = null, limit = 500) => {
   try {
     const { north, south, east, west } = bounds;
-    
+
     let query = `
       SELECT 
         city, 
@@ -306,21 +306,21 @@ exports.getByViewport = async (bounds, date = null, limit = 500) => {
       FROM environmental.air_quality
       WHERE ST_MakeEnvelope($1, $2, $3, $4, 4326) && geom
     `;
-    
+
     const params = [west, south, east, north];
-    
+
     if (date) {
-      query += ` AND observation_date = $5`;
+      query += ' AND observation_date = $5';
       params.push(date);
     }
-    
+
     query += ` LIMIT $${params.length + 1}`;
     params.push(limit);
-    
+
     const result = await db.query(query, params);
     return result.rows;
   } catch (error) {
-    logger.error(`Database error in airQuality.repository.getByViewport:`, error);
+    logger.error('Database error in airQuality.repository.getByViewport:', error);
     throw error;
   }
 };
@@ -347,23 +347,23 @@ exports.getVectorTile = async (z, x, y, date = null) => {
         FROM environmental.air_quality, bounds
         WHERE ST_Intersects(geom, bounds.geom)
     `;
-    
+
     const params = [z, x, y];
-    
+
     if (date) {
-      query += ` AND observation_date = $4`;
+      query += ' AND observation_date = $4';
       params.push(date);
     }
-    
+
     query += `
         GROUP BY city
       ) AS tile
     `;
-    
+
     const result = await db.query(query, params);
     return result.rows.length > 0 ? result.rows[0].mvt : null;
   } catch (error) {
-    logger.error(`Database error in airQuality.repository.getVectorTile:`, error);
+    logger.error('Database error in airQuality.repository.getVectorTile:', error);
     throw error;
   }
 };
@@ -376,9 +376,9 @@ exports.getCities = async () => {
       ORDER BY city
     `;
     const result = await db.query(query);
-    return result.rows.map(row => row.city);
+    return result.rows.map((row) => row.city);
   } catch (error) {
-    logger.error(`Database error in airQuality.repository.getCities:`, error);
+    logger.error('Database error in airQuality.repository.getCities:', error);
     throw error;
   }
 };
@@ -391,9 +391,9 @@ exports.getDates = async () => {
       ORDER BY observation_date
     `;
     const result = await db.query(query);
-    return result.rows.map(row => row.observation_date);
+    return result.rows.map((row) => row.observation_date);
   } catch (error) {
-    logger.error(`Database error in airQuality.repository.getDates:`, error);
+    logger.error('Database error in airQuality.repository.getDates:', error);
     throw error;
   }
 };
@@ -413,7 +413,7 @@ exports.getPM25Stats = async () => {
     const result = await db.query(query);
     return result.rows[0];
   } catch (error) {
-    logger.error(`Database error in airQuality.repository.getPM25Stats:`, error);
+    logger.error('Database error in airQuality.repository.getPM25Stats:', error);
     throw error;
   }
 };
@@ -433,11 +433,10 @@ exports.getPopulationDensityStats = async () => {
     const result = await db.query(query);
     return result.rows[0];
   } catch (error) {
-    logger.error(`Database error in airQuality.repository.getPopulationDensityStats:`, error);
+    logger.error('Database error in airQuality.repository.getPopulationDensityStats:', error);
     throw error;
   }
 };
-
 
 exports.getDateRange = async () => {
   try {
@@ -458,7 +457,7 @@ exports.getDateRange = async () => {
 exports.getDataByDateAndViewport = async (date, bounds, limit = 1000) => {
   try {
     const { north, south, east, west } = bounds;
-    
+
     const query = `
       SELECT 
         id, 
@@ -473,11 +472,11 @@ exports.getDataByDateAndViewport = async (date, bounds, limit = 1000) => {
       ORDER BY predicted_pm25 DESC
       LIMIT $6
     `;
-    
+
     const result = await db.query(query, [date, west, south, east, north, limit]);
     return result.rows;
   } catch (error) {
-    logger.error(`Database error in airQuality.repository.getDataByDateAndViewport:`, error);
+    logger.error('Database error in airQuality.repository.getDataByDateAndViewport:', error);
     throw error;
   }
 };
@@ -485,9 +484,9 @@ exports.getDataByDateAndViewport = async (date, bounds, limit = 1000) => {
 exports.getClustersByDate = async (date, zoom, bounds) => {
   try {
     const { north, south, east, west } = bounds;
-    
+
     const gridSize = 20 - parseInt(zoom);
-    
+
     const query = `
       SELECT 
         ST_AsGeoJSON(ST_Centroid(cluster_geom))::json as centroid,
@@ -507,11 +506,11 @@ exports.getClustersByDate = async (date, zoom, bounds) => {
       WHERE cid IS NOT NULL
       GROUP BY cid, cluster_geom
     `;
-    
+
     const result = await db.query(query, [gridSize * 0.01, date, west, south, east, north]);
     return result.rows;
   } catch (error) {
-    logger.error(`Database error in airQuality.repository.getClustersByDate:`, error);
+    logger.error('Database error in airQuality.repository.getClustersByDate:', error);
     throw error;
   }
 };
