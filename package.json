@@ -1,0 +1,42 @@
+{
+  "name": "sarva-express-api",
+  "version": "1.0.0",
+  "description": "Express API server for interfacing with the PostgreSQL database for SARVA. This API enables spatial data access and manipulation for environmental, social, and economic risk assessments in South Africa.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"**/*.{js,json,md}\"",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SAEONData/sarva-express-api.git"
+  },
+  "keywords": [],
+  "author": "Samukelo Jiyane, NRF-SAEON",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/SAEONData/sarva-express-api/issues"
+  },
+  "homepage": "https://github.com/SAEONData/sarva-express-api#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-validator": "^7.2.1",
+    "helmet": "^8.1.0",
+    "morgan": "^1.10.0",
+    "pg": "^8.14.1",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.23.0",
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.9",
+    "supertest": "^7.1.0"
+  }
+}
