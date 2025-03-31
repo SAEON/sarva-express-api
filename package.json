@@ -9,8 +9,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "npx prettier --write \"**/*.{js,json,md}\"",
-    "test": "jest",
-    "prepare": "husky install"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
