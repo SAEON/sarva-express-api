@@ -25,15 +25,15 @@ module.exports = [
       'no-console': ['warn', { allow: ['warn', 'error', 'info'] }],
 
       // Style consistency
-      'semi': ['error', 'always'],
-      'quotes': ['error', 'single', { avoidEscape: true }],
+      semi: ['error', 'always'],
+      quotes: ['error', 'single', { avoidEscape: true }],
       'comma-dangle': ['error', 'always-multiline'],
-      'indent': ['error', 2],
+      indent: ['error', 2],
 
       // Best practices
       'arrow-body-style': ['error', 'as-needed'],
-      'camelcase': ['error', { properties: 'never' }],
-      'eqeqeq': ['error', 'always'],
+      camelcase: ['error', { properties: 'never' }],
+      eqeqeq: ['error', 'always'],
       'object-shorthand': 'error',
 
       // ES6+ features
