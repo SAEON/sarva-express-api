@@ -13,6 +13,8 @@ const pool = new Pool({
 const types = require('pg').types;
 
 types.setTypeParser(1700, (val) => parseFloat(val));
+// Return DATE columns as 'YYYY-MM-DD' strings; the default JS Date parse shifts the day by the server's UTC offset
+types.setTypeParser(1082, (val) => val);
 
 pool.on('error', (err) => {
   logger.error('Unexpected error on idle client', err);
